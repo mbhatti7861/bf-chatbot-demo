@@ -1,0 +1,146 @@
+[
+  {
+    "id": "OVERVIEW",
+    "title": "Landing Zone Build Process Overview",
+    "source": "Wiki",
+    "text": "The Landing Zone build process is divided into three phases: Pre-Build (Steps 10-300), Build (Step 400), and Post-Build (Steps 500-1000). Pre-build steps prepare the order, allocate networking, and obtain the necessary approvals and access. The build step executes the account vending machine. Post-build steps configure tooling, onboard teams, and validate the environment before handoff."
+  },
+  {
+    "id": "STEP-10",
+    "title": "Step 10: Intake and Order Preparation",
+    "source": "Runbook",
+    "text": "Prerequisite: the service request has been submitted in the ITSM platform by the requesting team. The engineer verifies the order data in the ITSM platform (pizza tracker view), runs the automation tool to generate four Landing Zone order files — parameter file (parm.yml), metadata file (meta.yml), feature file (feature.html), and release file (release.html) — and uploads them to the Hybrid Repository. The engineer then updates the Jira feature by removing the NOT READY flag, adding the Fix version, and linking the four artifact files. Finally, notification emails are sent to ADT contacts for observability and monitoring onboarding, and build readiness is posted to the team chat."
+  },
+  {
+    "id": "STEP-10-VARIANTS",
+    "title": "Step 10: Request Type Variants",
+    "source": "Runbook",
+    "text": "Step 10 handles three request types: new account (full Landing Zone provisioning), add account (adding an account to an existing LZ), and add application (adding an application to an existing LZ). Each variant has different description content requirements in the Jira feature. The Jira feature is automatically created from the ITSM ticket in current platform releases."
+  },
+  {
+    "id": "STEP-10-FILES",
+    "title": "Step 10: Landing Zone Order File Structure",
+    "source": "Runbook",
+    "text": "The automation tool generates four files per Landing Zone: the parameter file is the initial file used to generate the other three; the metadata file (meta.yml) contains LZ configuration used by downstream steps; the feature file and release file are HTML documents uploaded to the Hybrid Repository in SharePoint. All four files must be present and uploaded to the correct SharePoint folders before proceeding."
+  },
+  {
+    "id": "STEP-100",
+    "title": "Step 100: Submit LZ CIDR Request",
+    "source": "Runbook",
+    "text": "Prerequisite: Step 10 is complete and order details are confirmed in the Jira feature. The engineer authenticates to the LZ Build Prep tool, runs it against the metadata table (pulls data directly — no manual YAML files required), and uses the automation platform APIs to generate CIDR ranges for the new Landing Zone. The CIDR generation process can take up to 30 minutes; an automated email is sent for each CIDR range generated. Do not interrupt the process once started. The generated CIDRs are used in the Vending Machine build step parameter files."
+  },
+  {
+    "id": "STEP-100-ROLES",
+    "title": "Step 100: Required Access Roles",
+    "source": "Runbook",
+    "text": "Step 100 requires three non-privileged roles via the access management platform: the VM developer role (for creating and uploading parameter files and pipeline configs), the ADT engineer role (access to the build UAT repository), and a second ADT engineer role (access to the build production repository). These are standing-access roles that must be requested via the IdP if not already held."
+  },
+  {
+    "id": "STEP-200",
+    "title": "Step 200: Submit Non-IdP Access Role Requests",
+    "source": "Runbook",
+    "text": "Submit ITSM service requests for non-AWS, non-IdP access roles required for the new Landing Zone. The standard business justification is: roles required for newly built Landing Zones (observability, security posture management, and related platform roles). These requests run in parallel with Steps 210 and 220 during the pre-build phase."
+  },
+  {
+    "id": "STEP-210",
+    "title": "Step 210: Observability — Submit IdP Requests",
+    "source": "Runbook",
+    "text": "Submit IdP (access management platform) requests for the observability system (ELMA) on behalf of the Landing Zone owner team. The engineer submits the request and monitors for approval. This step runs in parallel with Steps 200 and 220. The LZ owner will receive email notifications and must approve ELMA access requests via the access management portal."
+  },
+  {
+    "id": "STEP-220",
+    "title": "Step 220: Monitoring — Submit AD Info",
+    "source": "Runbook",
+    "text": "Submit Active Directory group information to the monitoring platform (Dynatrace) for onboarding the new Landing Zone. The LZ owner's manager or officer receives an ITSM notification to approve the AD group creation. This step runs in parallel with Steps 200 and 210. The AD group is required for Dynatrace onboarding in post-build Step 720."
+  },
+  {
+    "id": "STEP-300",
+    "title": "Step 300: Submit Change Request for LZ Build",
+    "source": "Runbook",
+    "text": "A Change Request (CRQ) must be submitted and approved in the ITSM platform before the Vending Machine (Step 400) can execute. The change request documents the Landing Zone identifier, region, request type, and business justification. The change window must be active at the time of Step 400 execution. Change requests must not fall within scheduled freeze windows. Verify the change window dates before proceeding."
+  },
+  {
+    "id": "STEP-400",
+    "title": "Step 400 and 410: Run Vending Machine and Submit Compliance PR",
+    "source": "Runbook",
+    "text": "This is the core build step. The engineer updates the YAML parameter files in the LZ parameters repository and submits a pull request to the compliance policies repository. The Vending Machine Step Function is then executed. To decouple the CMDB update from the main execution (recommended for production), append the CMDB identifier to the last four characters of the execution name — this runs the CMDB Manager Lambda separately after the Vending Machine completes. The active Change Request from Step 300 must be open during execution."
+  },
+  {
+    "id": "STEP-500",
+    "title": "Step 500: Generate Welcome Kit",
+    "source": "Runbook",
+    "text": "Generate the welcome kit document for the Landing Zone owner and ADT team. The welcome kit contains account details, access information, key contacts, and onboarding guides tailored to the request type (new account, add account, or add application). Upload the completed welcome kit to the appropriate SharePoint location."
+  },
+  {
+    "id": "STEP-510",
+    "title": "Step 510: Generate Account Documentation Page",
+    "source": "Runbook",
+    "text": "Generate the account documentation page (CKL page) for the new Landing Zone. This page records the LZ configuration and is referenced in future build and decommission operations. Upload the generated page to the designated documentation location."
+  },
+  {
+    "id": "STEP-520",
+    "title": "Step 520: Partner Notification",
+    "source": "Runbook",
+    "text": "Partner notification is now handled automatically by the ITSM platform workflow. No manual action is required when the ServiceNow workflow is active. Verify the automated notification fired correctly before marking this step complete."
+  },
+  {
+    "id": "STEP-600",
+    "title": "Step 600: CICD Onboarding",
+    "source": "Runbook",
+    "text": "Configure CI/CD pipelines for the new Landing Zone. This includes creating the configuration files, submitting a merge request to the CI/CD repository, and verifying the pipeline runs successfully. The engineer validates the configuration and execution before proceeding to role request steps."
+  },
+  {
+    "id": "STEP-700",
+    "title": "Step 700: Submit Identity and AWS Access Role Requests",
+    "source": "Runbook",
+    "text": "Submit Okta and AWS IAM access role requests for the Landing Zone owner team. The standard pattern requires three FedIdentity roles: the VM developer role, the ADT engineer UAT role, and the ADT engineer production role. All three must be approved before QA can begin. Validate roles are active before proceeding to Step 900."
+  },
+  {
+    "id": "STEP-710",
+    "title": "Step 710: Observability Onboarding (Redshift and Grafana)",
+    "source": "Runbook",
+    "text": "Complete observability platform (ELMA) onboarding for Redshift and Grafana access for the Landing Zone. The engineer submits the onboarding requests and monitors for approval. The LZ owner must have approved their ELMA access (from Step 210) before this step can complete."
+  },
+  {
+    "id": "STEP-720",
+    "title": "Step 720: Monitoring Onboarding (Dynatrace)",
+    "source": "Runbook",
+    "text": "Complete Dynatrace monitoring onboarding using the Active Directory group established in Step 220. The engineer submits the final onboarding configuration. The AD group approval from Step 220 is a prerequisite for this step."
+  },
+  {
+    "id": "STEP-800",
+    "title": "Step 800: Configure Privileged Access Management",
+    "source": "Runbook",
+    "text": "Configure privileged access management (PAM/EPV) for the new Landing Zone. This step must be completed before final handoff to the owner team. Follow the PAM configuration runbook specific to the Landing Zone type and environment."
+  },
+  {
+    "id": "STEP-900",
+    "title": "Step 900: Perform LZ QA Automation",
+    "source": "Runbook",
+    "text": "Run kinit first — this is required; skipping it will cause the QA script to hang. Authenticate, then execute the QA automation script. The script validates three areas: identity role federation (Okta and non-Okta), Terraform infrastructure boilerplate, and VPC endpoint configuration. Known expected failures are the observability (ELMA) check and the Terraform plan check — these are normal and do not indicate defects. Any other failure is a real defect and must be documented. Remove yourself from all LZ roles upon successful completion."
+  },
+  {
+    "id": "STEP-1000",
+    "title": "Step 1000: Welcome Meeting Invite and Final Handoff",
+    "source": "Runbook",
+    "text": "Send a welcome meeting invitation to the Landing Zone owner team. Mark all ITSM tasks complete and add closing notes. Confirm the LZ is fully operational and handed off. The welcome kit and account documentation page from Steps 500 and 510 should already be available to the owner team at this point."
+  },
+  {
+    "id": "POLICY-CHANGE-WINDOW",
+    "title": "Change Window and Freeze Policy",
+    "source": "Policy",
+    "text": "Change Requests must be active and approved before the Vending Machine executes. Compliance (Matter) releases occur on Thursdays; CICD releases occur on Mondays. No Landing Zone builds may be executed during scheduled freeze windows (e.g., monetary policy meeting blackout periods). Verify the change window is not within a freeze window before submitting the CRQ."
+  },
+  {
+    "id": "POLICY-DECOM",
+    "title": "Decommission Policy",
+    "source": "Policy",
+    "text": "A Landing Zone may only be decommissioned after it has been confirmed idle (no active workloads) for a sufficient period. A Change Request is required before any teardown action. Production environments require a second approver. The engineer must verify no active pipelines, open tickets, or dependent resources exist before proposing decommission."
+  },
+  {
+    "id": "POLICY-CIDR",
+    "title": "CIDR Allocation Standards",
+    "source": "Policy",
+    "text": "Landing Zones are allocated non-overlapping CIDR blocks. Services-prod and services-nonprd accounts are always assigned an input location of Internal regardless of the LZ type. CIDR generation is performed via the automation platform APIs, not manually. All allocations are recorded in the metadata table. Never reuse or manually assign a CIDR that appears in the existing registry."
+  }
+]

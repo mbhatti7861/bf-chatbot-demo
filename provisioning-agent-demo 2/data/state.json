@@ -1,0 +1,88 @@
+{
+  "step_definitions": [
+    {"step": 10,   "name": "Intake and Order Preparation",              "phase": "pre-build",  "systems": ["ITSM", "SharePoint", "Jira", "Automation Tool"]},
+    {"step": 100,  "name": "Submit LZ CIDR Request",                    "phase": "pre-build",  "systems": ["LZ Build Prep", "Automation Platform", "Metadata Table"]},
+    {"step": 200,  "name": "Submit Non-IdP Access Role Requests",        "phase": "pre-build",  "systems": ["ITSM"]},
+    {"step": 210,  "name": "Observability — Submit IdP Requests",        "phase": "pre-build",  "systems": ["IdP", "ELMA"]},
+    {"step": 220,  "name": "Monitoring — Submit AD Info",                "phase": "pre-build",  "systems": ["Dynatrace", "Active Directory"]},
+    {"step": 300,  "name": "Submit Change Request for LZ Build",         "phase": "pre-build",  "systems": ["ITSM"]},
+    {"step": 400,  "name": "Run Vending Machine and Submit Compliance PR","phase": "build",      "systems": ["Vending Machine", "LZ Parameters Repo", "Compliance Repo", "CMDB Manager"]},
+    {"step": 500,  "name": "Generate Welcome Kit",                       "phase": "post-build", "systems": ["Automation Tool", "SharePoint"]},
+    {"step": 510,  "name": "Generate Account Documentation Page",        "phase": "post-build", "systems": ["Automation Tool", "SharePoint"]},
+    {"step": 520,  "name": "Partner Notification",                       "phase": "post-build", "systems": ["ITSM (automated)"]},
+    {"step": 600,  "name": "CICD Onboarding",                            "phase": "post-build", "systems": ["GitLab", "CI/CD Pipeline"]},
+    {"step": 700,  "name": "Submit Identity and AWS Access Role Requests","phase": "post-build", "systems": ["Okta", "IdP", "AWS IAM"]},
+    {"step": 710,  "name": "Observability Onboarding",                   "phase": "post-build", "systems": ["ELMA", "Redshift", "Grafana"]},
+    {"step": 720,  "name": "Monitoring Onboarding",                      "phase": "post-build", "systems": ["Dynatrace", "Active Directory"]},
+    {"step": 800,  "name": "Configure Privileged Access Management",     "phase": "post-build", "systems": ["PAM"]},
+    {"step": 900,  "name": "Perform LZ QA Automation",                   "phase": "post-build", "systems": ["QA Automation Script", "IdP", "Terraform", "VPC"]},
+    {"step": 1000, "name": "Welcome Meeting Invite and Final Handoff",   "phase": "post-build", "systems": ["Calendar", "ITSM"]}
+  ],
+  "landing_zones": [
+    {
+      "lz_id": "LZ-1001",
+      "team": "Team Atlas",
+      "region": "us-east-1",
+      "type": "new-account",
+      "status": "active",
+      "cidr": "10.10.0.0/16",
+      "account_alias": "atlas-prod",
+      "itsm_ticket": "RITM-10010",
+      "jira_feature": "FEAT-1001",
+      "current_step": 1000,
+      "step_phase": "complete"
+    },
+    {
+      "lz_id": "LZ-1002",
+      "team": "Team Borealis",
+      "region": "us-west-2",
+      "type": "new-account",
+      "status": "provisioning",
+      "cidr": "10.20.0.0/16",
+      "account_alias": "borealis-dev",
+      "itsm_ticket": "RITM-10020",
+      "jira_feature": "FEAT-1002",
+      "current_step": 300,
+      "step_phase": "pre-build"
+    },
+    {
+      "lz_id": "LZ-1003",
+      "team": "Team Cobalt",
+      "region": "us-east-2",
+      "type": "new-account",
+      "status": "idle",
+      "cidr": "10.30.0.0/16",
+      "account_alias": "cobalt-sandbox",
+      "itsm_ticket": "RITM-10030",
+      "jira_feature": "FEAT-1003",
+      "current_step": 1000,
+      "step_phase": "complete",
+      "idle_days": 62,
+      "eligible_for_decommission": true
+    }
+  ],
+  "step_tracker": [
+    {"lz_id": "LZ-1002", "step": 10,  "name": "Intake and Order Preparation",   "status": "complete"},
+    {"lz_id": "LZ-1002", "step": 100, "name": "Submit LZ CIDR Request",          "status": "complete"},
+    {"lz_id": "LZ-1002", "step": 200, "name": "Submit Non-IdP Access Requests",  "status": "in_progress"},
+    {"lz_id": "LZ-1002", "step": 210, "name": "Observability IdP Requests",      "status": "in_progress"},
+    {"lz_id": "LZ-1002", "step": 220, "name": "Monitoring AD Info",              "status": "complete"},
+    {"lz_id": "LZ-1002", "step": 300, "name": "Submit Change Request",           "status": "pending"}
+  ],
+  "cidr_allocations": [
+    "10.10.0.0/16",
+    "10.20.0.0/16",
+    "10.30.0.0/16",
+    "10.40.0.0/20"
+  ],
+  "tickets": [
+    {"id": "RITM-10020", "type": "itsm",    "title": "New LZ for Team Borealis",     "status": "in_progress", "lz_id": "LZ-1002"},
+    {"id": "RITM-10030", "type": "itsm",    "title": "Decommission LZ-1003",         "status": "open",        "lz_id": "LZ-1003"},
+    {"id": "FEAT-1002",  "type": "jira",    "title": "LZ-1002 Team Borealis Build",  "status": "in_progress", "lz_id": "LZ-1002"},
+    {"id": "CRQ-10021",  "type": "change",  "title": "Change Request for LZ-1002",  "status": "pending",     "lz_id": "LZ-1002"}
+  ],
+  "pipelines": [
+    {"pipeline_id": "PL-1001", "lz_id": "LZ-1001", "status": "passing"},
+    {"pipeline_id": "PL-1002", "lz_id": "LZ-1002", "status": "not_started", "note": "CICD onboarding pending"}
+  ]
+}
