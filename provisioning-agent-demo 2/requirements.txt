@@ -4,3 +4,5 @@ boto3
 fastapi
 uvicorn[standard]
 pydantic
+numpy
+faiss-cpu

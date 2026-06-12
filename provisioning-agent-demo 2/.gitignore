@@ -7,3 +7,7 @@ __pycache__/
 *.egg-info/
 dist/
 .DS_Store
+data/.embeddings_cache.json
+BuildFactory Docs/
+creds.txt
+embed_out.json

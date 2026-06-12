@@ -1,0 +1,28 @@
+{
+  "incident": [
+    {"number": "INC-2051", "short_description": "Grafana dashboard access denied for Atlas owner", "lz_id": "LZ-1001", "state": "resolved", "priority": "3", "assignment_group": "Cloud Platform"},
+    {"number": "INC-2052", "short_description": "Delayed CIDR generation email for Borealis build", "lz_id": "LZ-1002", "state": "in_progress", "priority": "4", "assignment_group": "Cloud Networking"},
+    {"number": "INC-2053", "short_description": "RedShift (ELMA) access approval pending from repository owner", "lz_id": "LZ-1002", "state": "in_progress", "priority": "4", "assignment_group": "Observability"}
+  ],
+  "request": [
+    {"number": "RITM-10010", "short_description": "New Landing Zone for Team Atlas", "lz_id": "LZ-1001", "state": "closed_complete", "requested_for": "Team Atlas"},
+    {"number": "RITM-10020", "short_description": "New Landing Zone for Team Borealis", "lz_id": "LZ-1002", "state": "in_progress", "requested_for": "Team Borealis"},
+    {"number": "RITM-10030", "short_description": "Decommission Landing Zone LZ-1003", "lz_id": "LZ-1003", "state": "open", "requested_for": "Team Cobalt"},
+    {"number": "RITM-10041", "short_description": "Create AWS Okta access roles for Borealis (Step 700)", "lz_id": "LZ-1002", "state": "in_progress", "requested_for": "Team Borealis"}
+  ],
+  "change_request": [
+    {"number": "CRQ-10011", "short_description": "Standard change for LZ-1001 build", "lz_id": "LZ-1001", "state": "implemented", "risk": "moderate", "approval": "approved"},
+    {"number": "CRQ-10021", "short_description": "Standard change for LZ-1002 build", "lz_id": "LZ-1002", "state": "scheduled", "risk": "moderate", "approval": "approved"}
+  ],
+  "cmdb_ci_landing_zone": [
+    {"lz_id": "LZ-1001", "team": "Team Atlas",    "region": "us-east-1", "type": "new-account", "status": "active",       "cidr": "10.10.0.0/16", "account_alias": "atlas-prod",     "current_step": 1000, "step_phase": "complete"},
+    {"lz_id": "LZ-1002", "team": "Team Borealis", "region": "us-west-2", "type": "new-account", "status": "provisioning", "cidr": "10.20.0.0/16", "account_alias": "borealis-dev",   "current_step": 300,  "step_phase": "pre-build"},
+    {"lz_id": "LZ-1003", "team": "Team Cobalt",   "region": "us-east-2", "type": "new-account", "status": "idle",         "cidr": "10.30.0.0/16", "account_alias": "cobalt-sandbox", "current_step": 1000, "step_phase": "complete", "idle_days": 62, "eligible_for_decommission": true}
+  ],
+  "cidr_allocation": [
+    {"cidr": "10.10.0.0/16", "lz_id": "LZ-1001"},
+    {"cidr": "10.20.0.0/16", "lz_id": "LZ-1002"},
+    {"cidr": "10.30.0.0/16", "lz_id": "LZ-1003"},
+    {"cidr": "10.40.0.0/20", "lz_id": "reserved"}
+  ]
+}

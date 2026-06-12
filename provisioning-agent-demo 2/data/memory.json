@@ -1,18 +1,32 @@
-[
-  {
-    "fact": "LZ-1002 was discussed — Team Borealis provisioning in us-west-2",
-    "ts": "2026-06-07T09:14:00"
+{
+  "entities": {
+    "LZ-1002": {
+      "id": "LZ-1002",
+      "type": "landing_zone",
+      "label": "Team Borealis · us-west-2 · new-account",
+      "first_seen": "2026-06-07T09:14:00",
+      "last_seen": "2026-06-12T15:31:31"
+    },
+    "Team Borealis": {
+      "id": "Team Borealis",
+      "type": "team",
+      "label": "owns LZ-1002 (us-west-2)",
+      "first_seen": "2026-06-07T09:14:00",
+      "last_seen": "2026-06-12T15:31:31"
+    },
+    "LZ-1003": {
+      "id": "LZ-1003",
+      "type": "landing_zone",
+      "label": "Team Cobalt · us-east-2 · new-account",
+      "first_seen": "2026-06-07T09:31:00",
+      "last_seen": "2026-06-07T09:31:00"
+    }
   },
-  {
-    "fact": "LZ-1002 is currently at Step 300 with a Change Request pending",
-    "ts": "2026-06-07T09:15:00"
-  },
-  {
-    "fact": "A Change Request was proposed for LZ-1002",
-    "ts": "2026-06-07T09:16:00"
-  },
-  {
-    "fact": "LZ-1003 was discussed — Team Cobalt environment idle for 62 days, eligible for decommission",
-    "ts": "2026-06-07T09:31:00"
-  }
-]
+  "decisions": [
+    {
+      "text": "Proposed ServiceNow CRQ for LZ-1002 build (awaiting approval)",
+      "key": "seed-crq-1002",
+      "ts": "2026-06-07T09:16:00"
+    }
+  ]
+}

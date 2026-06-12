@@ -1,0 +1,42 @@
+[
+  {
+    "id": "CLOUD-OVERVIEW",
+    "title": "Landing Zone Build Process — Overview",
+    "space": "CLOUD",
+    "author": "platform-eng",
+    "updated": "2026-05-28",
+    "text": "The Landing Zone build process runs in three phases: Pre-Build (Steps 10-300) prepares the order, allocates networking, requests access, and raises the change; Build (Steps 400/410) executes the Vending Machine and submits the compliance pull request; Post-Build (Steps 500-1000) generates documentation, onboards CICD, observability, monitoring and privileged access, runs QA, and delivers to the customer. Authoritative step-by-step procedures live in the Knowledge Base runbooks; this page is the orientation map for new engineers."
+  },
+  {
+    "id": "CLOUD-STEPCATALOG",
+    "title": "Landing Zone Build — Full Step Catalog",
+    "space": "CLOUD",
+    "author": "platform-eng",
+    "updated": "2026-05-30",
+    "text": "Pre-Build: Step 10 Prepare LZ Order (Intake); Step 100 Submit LZ CIDR Request; Step 200 Submit Non-Okta Access Role Requests; Step 210 Observability FedIdentity Requests; Step 220 Monitoring AD Group Info; Step 300 Submit Change Request. Build: Step 400/410 Run Vending Machine and Submit Compliance PR. Post-Build: Step 500 Generate Welcome Kit; Step 510 Generate Account Documentation Page; Step 520 Partner Notification (automated); Step 600 CICD Onboarding; Step 700 Submit Okta/AWS Access Requests; Step 710 Observability Onboarding (RedShift/Grafana); Step 720 Monitoring Onboarding (Dynatrace); Step 800 Configure Privileged Access (EPV); Step 900 Perform LZ QA; Step 1000 Welcome Meeting and Delivery. Steps 200, 210, and 220 run in parallel during pre-build."
+  },
+  {
+    "id": "CLOUD-ARCH",
+    "title": "Landing Zone Reference Architecture",
+    "space": "CLOUD",
+    "author": "cloud-architecture",
+    "updated": "2026-04-19",
+    "text": "Each Landing Zone is a set of dedicated cloud accounts vended by the Account Vending Machine Step Function. Networking uses non-overlapping CIDR blocks allocated centrally and recorded in the ServiceNow CMDB. CMDB updates are decoupled from the build: the Vending Machine drops an SQS message that a queue-manager lambda relays to a CMDB-manager lambda, so build and CMDB maintenance are independent. Compliance guardrails are applied as policy-as-code via a pull request; observability uses the ELMA platform (RedShift and Grafana); monitoring uses Dynatrace onboarded through an Active Directory group; and privileged credentials are stored in the Enterprise Password Vault."
+  },
+  {
+    "id": "CLOUD-DECOM-FAQ",
+    "title": "Decommission FAQ",
+    "space": "CLOUD",
+    "author": "platform-eng",
+    "updated": "2026-05-12",
+    "text": "Q: When can a Landing Zone be decommissioned? A: After it has been confirmed idle for the policy-mandated period and a change request has been approved. Q: Who approves? A: Production environments require a second approver. Q: What blocks a decommission? A: Active pipelines, open ServiceNow tickets, or in-progress Jira features tied to the environment. Q: Is teardown automatic? A: No — teardown only proceeds after the decommission change request is approved by a human."
+  },
+  {
+    "id": "CLOUD-SYNC-20260605",
+    "title": "Meeting Notes — LZ Build Sync 2026-06-05",
+    "space": "TEAM",
+    "author": "m.alvarez",
+    "updated": "2026-06-05",
+    "text": "Attendees reviewed the Borealis (LZ-1002) build. CIDR generation for Borealis finished in about 10 minutes this run, though the team noted it varies run to run. Action: chase the pending change request (CRQ-10021) blocking Step 300. Cobalt (LZ-1003) has now passed 60 days idle and is queued for decommission pending the impact check. Reminder: after Step 900 QA, remove yourself from all LZ roles."
+  }
+]

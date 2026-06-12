@@ -3,208 +3,208 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Forge — LZ Provisioning Agent</title>
+<title>Forge — Build Factory</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Geist+Mono:wght@400;500&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
 
   :root{
-    --bg:#080d18; --surface:#0d1526; --surface2:#111d33;
-    --border:#1a2d4a; --border2:#233a5e;
-    --text:#c8d8f0; --muted:#4d6a8a; --faint:#1a2840;
-    --green:#00d68f; --green-dim:rgba(0,214,143,.12); --green-border:rgba(0,214,143,.3);
-    --blue:#60a5fa;  --blue-dim:rgba(96,165,250,.1);  --blue-border:rgba(96,165,250,.3);
-    --amber:#f59e0b; --amber-dim:rgba(245,158,11,.1); --amber-border:rgba(245,158,11,.35);
-    --ok:#10b981;
+    --bg:#f5f6f8; --surface:#ffffff; --surface2:#f3f4f6;
+    --border:#e5e7eb; --border2:#d8dce1; --faint:#eef0f3;
+    --text:#111827; --muted:#6b7280; --soft:#9aa3af;
+    --primary:#2563eb; --primary-soft:#eff4ff; --primary-border:#cfddfb;
+    --amber:#b45309; --amber-bg:#fffaf0; --amber-border:#fcd9a3;
+    --green:#047857; --green-bg:#ecfdf5; --green-border:#a7f3d0;
     --mono:'Geist Mono',monospace;
-    --sans:'Bricolage Grotesque',sans-serif;
+    --sans:'Inter',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{
     font-family:var(--sans);background:var(--bg);color:var(--text);
     height:100vh;display:flex;flex-direction:column;overflow:hidden;
-    background-image:
-      radial-gradient(ellipse 60% 40% at 80% -10%,rgba(0,214,143,.04),transparent),
-      radial-gradient(ellipse 40% 60% at -10% 60%,rgba(96,165,250,.04),transparent);
+    -webkit-font-smoothing:antialiased;
   }
 
   header{
-    display:flex;align-items:center;gap:14px;padding:13px 22px;
+    display:flex;align-items:center;gap:12px;padding:13px 24px;
     border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;
   }
   .mark{
-    width:32px;height:32px;border-radius:8px;flex-shrink:0;
-    background:linear-gradient(135deg,var(--green),#008c5e);
+    width:30px;height:30px;border-radius:8px;flex-shrink:0;
+    background:linear-gradient(135deg,#2563eb,#1e40af);
     display:flex;align-items:center;justify-content:center;
-    font-family:var(--mono);font-size:12px;font-weight:500;color:#001a0e;
+    font-weight:700;font-size:15px;color:#fff;
   }
-  header h1{font-size:14px;font-weight:600;letter-spacing:-.1px}
-  header .sub{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:1px}
+  header h1{font-size:15px;font-weight:600;letter-spacing:-.2px}
+  header .sub{font-size:11px;color:var(--muted);margin-top:1px}
   .hright{margin-left:auto;display:flex;align-items:center;gap:10px}
-  .stat{font-family:var(--mono);font-size:11px;color:var(--muted)}
-  .stat b{color:var(--green)}
-  .btn-new-session{
-    font-family:var(--mono);font-size:10.5px;padding:6px 12px;border-radius:6px;
-    border:1px solid var(--border2);background:var(--surface2);color:var(--text);
+  .btn-ghost{
+    font-size:12px;font-weight:500;padding:7px 13px;border-radius:7px;
+    border:1px solid var(--border2);background:var(--surface);color:var(--text);
     cursor:pointer;transition:.15s;
   }
-  .btn-new-session:hover{border-color:var(--blue-border);color:var(--blue)}
-  .badge{
-    font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:4px;
-    background:var(--green-dim);border:1px solid var(--green-border);color:var(--green);
+  .btn-ghost:hover{border-color:var(--primary-border);color:var(--primary);background:var(--primary-soft)}
+  .pill{
+    font-family:var(--mono);font-size:10px;font-weight:500;padding:4px 9px;border-radius:20px;
+    background:var(--primary-soft);border:1px solid var(--primary-border);color:var(--primary);
+    letter-spacing:.5px;
   }
 
   .layout{flex:1;display:flex;min-height:0}
+
   aside{
-    width:230px;background:var(--surface);border-right:1px solid var(--border);
+    width:236px;background:var(--surface);border-right:1px solid var(--border);
     display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0;
   }
-  .aside-sec{padding:14px 16px;border-bottom:1px solid var(--border)}
-  .aside-sec h3{
-    font-family:var(--mono);font-size:9.5px;text-transform:uppercase;
-    letter-spacing:1.2px;color:var(--muted);margin-bottom:10px;
-    display:flex;align-items:center;justify-content:space-between;
+  .sec{padding:16px 18px;border-bottom:1px solid var(--border)}
+  .sec h3{
+    font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;
+    color:var(--soft);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;
   }
-  .aside-sec h3 a{
-    font-size:9px;color:var(--muted);cursor:pointer;text-decoration:underline;
-    text-underline-offset:2px;
-  }
-  .aside-sec h3 a:hover{color:var(--text)}
+  .sec h3 a{font-size:11px;font-weight:500;color:var(--soft);cursor:pointer;text-transform:none;letter-spacing:0}
+  .sec h3 a:hover{color:var(--primary)}
+  .sec h3 .ct{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:0}
 
-  /* Memory panel */
-  .mem-fact{
-    display:flex;gap:7px;padding:6px 0;border-bottom:1px solid var(--faint);
-    animation:appear .3s ease;
-  }
-  .mem-fact:last-child{border:0}
-  .mem-dot{
-    width:6px;height:6px;border-radius:50%;background:var(--blue);
-    flex-shrink:0;margin-top:5px;
-  }
-  .mem-text{font-size:11.5px;color:var(--text);line-height:1.4}
-  .mem-ts{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:2px}
-  .mem-empty{font-family:var(--mono);font-size:10.5px;color:var(--muted);font-style:italic}
-  .mem-injected{
-    font-family:var(--mono);font-size:9px;padding:3px 8px;border-radius:4px;
-    background:var(--blue-dim);border:1px solid var(--blue-border);color:var(--blue);
-    display:inline-block;margin-bottom:8px;
-  }
+  /* Memory */
+  .mem-grouplbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--soft);margin:10px 0 6px}
+  .mem-grouplbl:first-child{margin-top:0}
+  .mem-ent{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--faint);animation:fade .3s ease}
+  .mem-ent:last-child{border:0}
+  .mem-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0;margin-top:6px}
+  .mem-id{font-family:var(--mono);font-size:11.5px;color:var(--primary);font-weight:500}
+  .mem-label{font-size:11.5px;color:var(--text);line-height:1.4}
+  .mem-type{font-family:var(--mono);font-size:9.5px;color:var(--soft)}
+  .mem-dec{display:flex;gap:8px;padding:6px 0;font-size:11.5px;color:var(--text);line-height:1.45}
+  .mem-dec .chk{color:var(--green);flex-shrink:0;font-weight:700}
+  .muted-empty{font-size:12px;color:var(--soft);font-style:italic}
 
-  /* Steps panel */
-  .step-item{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:1px solid var(--faint)}
-  .step-item:last-child{border:0}
-  .step-num{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:30px;padding-top:1px}
-  .step-name{font-size:11.5px;color:var(--text);line-height:1.3}
-  .step-phase{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:1px}
-
-  /* Audit panel */
-  .audit-row{padding:5px 0;border-bottom:1px solid var(--faint);font-size:11px}
+  /* Audit */
+  .audit-row{padding:7px 0;border-bottom:1px solid var(--faint)}
   .audit-row:last-child{border:0}
-  .audit-id{font-family:var(--mono);font-size:9.5px;color:var(--green);margin-bottom:1px}
-  .empty{font-family:var(--mono);font-size:10.5px;color:var(--muted);font-style:italic}
+  .audit-id{font-family:var(--mono);font-size:10px;color:var(--green);font-weight:500;margin-bottom:2px}
+  .audit-sum{font-size:11.5px;color:var(--text);line-height:1.4}
 
   /* Chat */
   .chat-wrap{flex:1;display:flex;flex-direction:column;min-width:0}
-  .scroll{flex:1;overflow-y:auto;padding:28px 28px 10px}
-  .msg{margin-bottom:22px;animation:appear .25s ease}
-  @keyframes appear{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .who{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:7px}
-  .bubble{padding:14px 17px;border-radius:10px;font-size:13.5px;line-height:1.65;border:1px solid var(--border);background:var(--surface);max-width:760px}
-  .msg.user{margin-left:auto;max-width:70%}
+  .scroll{flex:1;overflow-y:auto;padding:30px 28px 12px}
+  .center{max-width:780px;margin:0 auto}
+  .msg{margin-bottom:22px;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .who{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.7px;color:var(--soft);margin-bottom:7px}
+  .bubble{padding:14px 17px;border-radius:12px;font-size:14px;line-height:1.65;border:1px solid var(--border);background:var(--surface);white-space:pre-wrap;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+  .msg.user{max-width:74%;margin-left:auto}
   .msg.user .who{text-align:right}
-  .msg.user .bubble{background:var(--green);color:#001a0e;border-color:transparent;font-weight:500;border-radius:10px 10px 2px 10px}
-  .msg.note .bubble{background:transparent;border:none;color:var(--muted);font-size:12.5px;font-family:var(--mono);padding:4px 0}
-  .msg.system .bubble{
-    background:var(--blue-dim);border-color:var(--blue-border);
-    font-family:var(--mono);font-size:11px;color:var(--blue);padding:10px 14px;
-  }
+  .msg.user .bubble{background:var(--primary);color:#fff;border-color:transparent;font-weight:500;border-radius:12px 12px 3px 12px}
+  .msg.note .bubble{background:transparent;border:none;color:var(--muted);font-size:13px;padding:2px 0;box-shadow:none}
+  .msg.system .bubble{background:var(--primary-soft);border-color:var(--primary-border);font-size:12.5px;color:#1e40af}
 
-  /* Pipeline trace */
-  .trace{max-width:760px;margin-bottom:22px;border:1px solid var(--border2);border-radius:10px;background:var(--surface2);overflow:hidden;animation:appear .25s ease}
-  .trace-head{padding:10px 15px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.5px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
-  .trace-head::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);display:block}
-  .tstep{display:flex;gap:12px;padding:11px 15px;border-bottom:1px solid var(--faint)}
+  /* Rendered markdown (agent replies + step output) */
+  .md p{margin:0 0 8px}
+  .md p:last-child,.md ul:last-child,.md ol:last-child{margin-bottom:0}
+  .md ul,.md ol{margin:4px 0 8px 20px}
+  .md li{margin:2px 0}
+  .md h4{font-size:13.5px;font-weight:600;margin:8px 0 4px}
+  .md strong{font-weight:600}
+  .md em{font-style:italic}
+  .md code{font-family:var(--mono);font-size:12px;background:var(--surface2);border:1px solid var(--border);padding:1px 5px;border-radius:4px}
+  .md a{color:var(--primary);text-decoration:underline}
+  .tstep-out.md p, .act-out.md p{margin:0 0 6px}
+
+  /* Multi-agent trace */
+  .trace{max-width:780px;margin:0 auto 22px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;animation:fade .25s ease;box-shadow:0 1px 2px rgba(16,24,40,.03)}
+  .trace-head{padding:11px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--primary);letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;gap:8px;background:var(--surface2)}
+  .trace-head::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--primary);display:block}
+  .tstep{display:flex;gap:13px;padding:13px 16px;border-bottom:1px solid var(--faint)}
   .tstep:last-child{border:0}
-  .tstep-num{font-family:var(--mono);font-size:10px;color:var(--green);min-width:18px;padding-top:2px}
-  .tstep-name{font-size:12.5px;font-weight:600;color:var(--text);margin-bottom:3px}
-  .tstep-out{font-size:12px;color:var(--muted);line-height:1.5}
+  .tstep-num{font-family:var(--mono);font-size:11px;color:var(--primary);min-width:18px;padding-top:2px;font-weight:500}
+  .tstep-name{font-size:13px;font-weight:600;color:var(--text);margin-bottom:5px}
+  .tstep-out{font-size:12.5px;color:var(--muted);line-height:1.55;white-space:pre-wrap}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+  .chip{font-family:var(--mono);font-size:9.5px;padding:2px 8px;border-radius:20px;background:var(--primary-soft);border:1px solid var(--primary-border);color:var(--primary)}
 
-  /* Action card */
-  .action{margin-top:12px;border:1px solid var(--amber-border);background:var(--amber-dim);border-radius:10px;padding:14px 16px}
-  .action-lbl{font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--amber);margin-bottom:8px;display:flex;gap:6px;align-items:center}
-  .action-lbl::before{content:'⬡';font-size:11px}
-  .action-sum{font-size:13.5px;font-weight:600;margin-bottom:3px}
-  .action-id{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:12px}
+  /* Live activity */
+  .activity{max-width:780px;margin:0 auto 22px;border:1px solid var(--border);border-radius:12px;background:var(--surface);overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.03);animation:fade .25s ease}
+  .activity-head{padding:11px 16px;border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--primary);letter-spacing:.3px;text-transform:uppercase;display:flex;align-items:center;gap:9px;background:var(--surface2)}
+  .activity.done .activity-head{color:var(--green)}
+  .act-row{display:flex;gap:11px;padding:10px 16px;border-bottom:1px solid var(--faint);align-items:flex-start}
+  .act-row:last-child{border:0}
+  .act-ico{width:14px;flex-shrink:0;margin-top:1px;display:flex;justify-content:center}
+  .spinner{width:12px;height:12px;border:2px solid var(--primary-soft);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .act-check{color:var(--green);font-weight:700;font-size:12px;line-height:1.2}
+  .act-body{flex:1;min-width:0}
+  .act-title{font-size:12.5px;color:var(--text);font-weight:500}
+  .act-meta{font-family:var(--mono);font-size:10px;color:var(--soft);margin-left:6px}
+  .act-row.action .act-title{color:var(--amber);font-weight:600}
+  .act-out{font-size:12px;color:var(--muted);line-height:1.5;margin-top:4px;white-space:pre-wrap}
+  .act-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+
+  /* Approval card */
+  .action{margin-top:13px;border:1px solid var(--amber-border);background:var(--amber-bg);border-radius:11px;padding:15px 17px}
+  .action-lbl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:var(--amber);margin-bottom:9px}
+  .action-sum{font-size:14px;font-weight:600;margin-bottom:3px}
+  .action-id{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-bottom:13px}
   .btns{display:flex;gap:9px}
-  button{font-family:var(--sans);font-size:12.5px;font-weight:500;border-radius:7px;padding:8px 16px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;transition:.15s}
-  button:hover{border-color:var(--border);color:#fff}
-  .btn-approve{background:var(--amber);color:#1c0e00;border-color:transparent;font-weight:600}
-  .btn-approve:hover{background:#e08b00;color:#1c0e00}
-  .resolved{font-family:var(--mono);font-size:11px;font-weight:500;margin-top:2px}
-  .resolved.ok{color:var(--ok)}.resolved.no{color:var(--muted)}
+  button{font-family:var(--sans);font-size:13px;font-weight:500;border-radius:8px;padding:9px 16px;border:1px solid var(--border2);background:var(--surface);color:var(--text);cursor:pointer;transition:.15s}
+  button:hover{border-color:var(--soft)}
+  .btn-approve{background:var(--primary);color:#fff;border-color:transparent;font-weight:600}
+  .btn-approve:hover{background:#1d4ed8}
+  .resolved{font-size:12px;font-weight:600;margin-top:2px}
+  .resolved.ok{color:var(--green)}.resolved.no{color:var(--muted)}
 
   /* Composer */
-  footer{background:var(--surface);border-top:1px solid var(--border);padding:15px 24px 18px;flex-shrink:0}
-  .composer{max-width:760px;margin:0 auto;display:flex;gap:10px}
-  .composer input{flex:1;font-family:var(--sans);font-size:13.5px;background:var(--bg);border:1px solid var(--border2);border-radius:9px;padding:12px 16px;color:var(--text);outline:none;transition:.15s}
-  .composer input::placeholder{color:var(--muted)}
-  .composer input:focus{border-color:var(--green);background:var(--surface2)}
-  .composer .send{background:var(--green);color:#001a0e;border-color:transparent;padding:0 22px;font-weight:600;font-size:13px;flex-shrink:0}
-  .composer .send:disabled{opacity:.4;cursor:default}
-  .hints{max-width:760px;margin:10px auto 0;display:flex;flex-wrap:wrap;gap:7px}
-  .hint-chip{font-family:var(--mono);font-size:10.5px;padding:5px 11px;border-radius:5px;border:1px solid var(--border2);background:var(--faint);color:var(--muted);cursor:pointer;transition:.15s}
-  .hint-chip:hover{border-color:var(--green-border);color:var(--green)}
+  footer{background:var(--surface);border-top:1px solid var(--border);padding:16px 24px 20px;flex-shrink:0}
+  .composer{max-width:780px;margin:0 auto;display:flex;gap:10px}
+  .composer input{flex:1;font-family:var(--sans);font-size:14px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;color:var(--text);outline:none;transition:.15s}
+  .composer input::placeholder{color:var(--soft)}
+  .composer input:focus{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+  .composer .send{background:var(--primary);color:#fff;border-color:transparent;padding:0 22px;font-weight:600;flex-shrink:0}
+  .composer .send:hover{background:#1d4ed8}
+  .composer .send:disabled{opacity:.45;cursor:default}
+  .hints{max-width:780px;margin:11px auto 0;display:flex;flex-wrap:wrap;gap:7px}
+  .hint{font-size:11.5px;padding:6px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--surface);color:var(--muted);cursor:pointer;transition:.15s}
+  .hint:hover{border-color:var(--primary-border);color:var(--primary);background:var(--primary-soft)}
 
-  @media(max-width:700px){aside{display:none}.scroll{padding:16px}.composer{flex-wrap:wrap}}
+  @media(max-width:760px){aside{display:none}.scroll{padding:18px}}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="mark">LZ</div>
+  <div class="mark">F</div>
   <div>
-    <h1>Forge — LZ Provisioning Agent</h1>
-    <div class="sub">supervisor · step pipeline · cross-session memory · governed actions</div>
+    <h1>Forge</h1>
+    <div class="sub">Bot for Everything · Build Factory</div>
   </div>
   <div class="hright">
-    <span class="stat">Approved: <b id="auditCount">0</b></span>
-    <button class="btn-new-session" id="btnNewSession">New Session</button>
-    <span class="badge">DEMO</span>
+    <button class="btn-ghost" id="btnNewSession">New Session</button>
+    <span class="pill">DEMO</span>
   </div>
 </header>
 
 <div class="layout">
   <aside>
-
-    <div class="aside-sec">
-      <h3>
-        Cross-Session Memory
-        <a id="clearMemory">clear</a>
-      </h3>
-      <div id="memoryPanel"><div class="mem-empty">No facts yet</div></div>
+    <div class="sec">
+      <h3>Memory <a id="clearMemory">clear</a></h3>
+      <div id="memoryPanel"><div class="muted-empty">No memory yet</div></div>
     </div>
-
-    <div class="aside-sec">
-      <h3>Build Steps</h3>
-      <div id="stepList"></div>
+    <div class="sec">
+      <h3>Audit <span class="ct" id="auditCount">0</span></h3>
+      <div id="auditLog"><div class="muted-empty">No approvals yet</div></div>
     </div>
-
-    <div class="aside-sec">
-      <h3>Audit Log</h3>
-      <div id="auditLog"><div class="empty">No actions yet</div></div>
-    </div>
-
   </aside>
 
   <div class="chat-wrap">
-    <div class="scroll" id="thread">
-      <div class="msg note">
-        <div class="bubble">Ask about process steps, live LZ state, or request a provisioning or decommission action. All data is synthetic.</div>
+    <div class="scroll">
+      <div class="center" id="thread">
+        <div class="msg note">
+          <div class="bubble">Ask a question or request a build action. All data is synthetic.</div>
+        </div>
       </div>
     </div>
     <footer>
       <div class="composer">
-        <input id="input" placeholder="Ask Forge..." autocomplete="off"/>
+        <input id="input" placeholder="Ask Forge…" autocomplete="off"/>
         <button class="send" id="send">Send</button>
       </div>
       <div class="hints" id="hints"></div>
@@ -220,91 +220,98 @@ const auditCount  = document.getElementById('auditCount');
 const auditLog    = document.getElementById('auditLog');
 const memoryPanel = document.getElementById('memoryPanel');
 
-// ── Step list ──────────────────────────────────────────────────────────────
-const STEPS = [
-  {n:'10',  name:'Intake & Order Prep',   phase:'pre-build'},
-  {n:'100', name:'CIDR Allocation',       phase:'pre-build'},
-  {n:'200', name:'Non-IdP Role Requests', phase:'pre-build'},
-  {n:'300', name:'Change Request',        phase:'pre-build'},
-  {n:'400', name:'Vending Machine',       phase:'build'},
-  {n:'500', name:'Welcome Kit',           phase:'post-build'},
-  {n:'900', name:'LZ QA',                 phase:'post-build'},
-  {n:'1000',name:'Handoff & Welcome',     phase:'post-build'},
-];
-document.getElementById('stepList').innerHTML = STEPS.map(s =>
-  `<div class="step-item">
-     <div class="step-num">${s.n}</div>
-     <div><div class="step-name">${s.name}</div><div class="step-phase">${s.phase}</div></div>
-   </div>`
-).join('');
+function esc(s){ const d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
+function scroll(){ const s=thread.parentElement.parentElement; s.scrollTop=s.scrollHeight; }
 
-// ── Hints ──────────────────────────────────────────────────────────────────
+// ── Minimal, self-contained markdown → HTML (input is HTML-escaped first) ─────
+function mdInline(s){
+  return s
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/__([^_]+)__/g, '<strong>$1</strong>')
+    .replace(/(^|[^*])\*([^*\s][^*]*?)\*(?!\*)/g, '$1<em>$2</em>')
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function mdToHtml(raw){
+  const lines = esc(raw == null ? '' : String(raw)).split(/\r?\n/);
+  let html = '', list = null, para = [];
+  const flush = () => { if(para.length){ html += '<p>' + para.map(mdInline).join('<br>') + '</p>'; para = []; } };
+  const closeList = () => { if(list){ html += '</' + list + '>'; list = null; } };
+  for(const line of lines){
+    let m;
+    if(/^\s*#{1,6}\s+/.test(line)){ flush(); closeList(); html += '<h4>' + mdInline(line.replace(/^\s*#+\s+/, '')) + '</h4>'; }
+    else if((m = line.match(/^\s*[-*]\s+(.*)/))){ flush(); if(list !== 'ul'){ closeList(); html += '<ul>'; list = 'ul'; } html += '<li>' + mdInline(m[1]) + '</li>'; }
+    else if((m = line.match(/^\s*\d+\.\s+(.*)/))){ flush(); if(list !== 'ol'){ closeList(); html += '<ol>'; list = 'ol'; } html += '<li>' + mdInline(m[1]) + '</li>'; }
+    else if(/^\s*$/.test(line)){ flush(); closeList(); }
+    else { para.push(line); }
+  }
+  flush(); closeList();
+  return html;
+}
+
+// ── Hints ────────────────────────────────────────────────────────────────────
 const SAMPLES = [
   "What are all the steps in the LZ build process?",
-  "What's the build status of LZ-1002?",
+  "Full status of LZ-1002 across ServiceNow and Jira",
+  "How long does CIDR generation take?",
+  "Is LZ-1002 ready to build? Run the Vending Machine if so",
   "Provision a new Landing Zone for Team Delta in us-east-1",
   "Can LZ-1003 be decommissioned?",
 ];
-document.getElementById('hints').innerHTML = SAMPLES.map(s =>
-  `<span class="hint-chip">${s}</span>`
-).join('');
-document.querySelectorAll('.hint-chip').forEach((el, i) =>
-  el.onclick = () => { input.value = SAMPLES[i]; send(); }
-);
+document.getElementById('hints').innerHTML = SAMPLES.map(s => `<span class="hint">${s}</span>`).join('');
+document.querySelectorAll('.hint').forEach((el,i) => el.onclick = () => { input.value = SAMPLES[i]; send(); });
 
-// ── Memory rendering ───────────────────────────────────────────────────────
-function renderMemory(facts){
-  if(!facts || !facts.length){
-    memoryPanel.innerHTML = '<div class="mem-empty">No facts yet</div>';
+// ── Memory ───────────────────────────────────────────────────────────────────
+function renderMemory(mem){
+  const ents = mem && mem.entities ? Object.values(mem.entities) : [];
+  const decs = mem && mem.decisions ? mem.decisions : [];
+  ents.sort((a,b) => (b.last_seen||'').localeCompare(a.last_seen||''));
+  if(!ents.length && !decs.length){
+    memoryPanel.innerHTML = '<div class="muted-empty">No memory yet</div>';
     return;
   }
-  memoryPanel.innerHTML =
-    `<div class="mem-injected">⟳ ${facts.length} fact${facts.length>1?'s':''} loaded into context</div>` +
-    [...facts].reverse().map(f =>
-      `<div class="mem-fact">
-         <div class="mem-dot"></div>
-         <div>
-           <div class="mem-text"></div>
-           <div class="mem-ts">${f.ts ? f.ts.replace('T',' ').slice(0,16) : ''}</div>
-         </div>
-       </div>`
-    ).join('');
-  memoryPanel.querySelectorAll('.mem-text').forEach((el, i) => {
-    el.textContent = [...facts].reverse()[i].fact;
-  });
+  let html = '';
+  if(ents.length){
+    html += '<div class="mem-grouplbl">Worked on</div>';
+    html += ents.map(e =>
+      `<div class="mem-ent"><div class="mem-dot"></div><div>
+         <div><span class="mem-id">${esc(e.id)}</span> <span class="mem-type">${esc(e.type)}</span></div>
+         ${e.label ? `<div class="mem-label">${esc(e.label)}</div>` : ''}
+       </div></div>`).join('');
+  }
+  if(decs.length){
+    html += '<div class="mem-grouplbl">Decisions</div>';
+    html += decs.map(d => `<div class="mem-dec"><span class="chk">✓</span><span>${esc(d.text)}</span></div>`).join('');
+  }
+  memoryPanel.innerHTML = html;
 }
-
-// ── Load initial memory ────────────────────────────────────────────────────
 fetch('/api/memory').then(r => r.json()).then(d => renderMemory(d.memory));
 
-// ── Clear memory ───────────────────────────────────────────────────────────
 document.getElementById('clearMemory').onclick = async () => {
-  await fetch('/api/memory', {method:'DELETE'});
-  renderMemory([]);
+  const r = await (await fetch('/api/memory', {method:'DELETE'})).json();
+  renderMemory(r.memory);
 };
 
-// ── New session ────────────────────────────────────────────────────────────
 document.getElementById('btnNewSession').onclick = async () => {
   const r = await (await fetch('/api/session/new', {method:'POST'})).json();
   thread.innerHTML = '';
-  addSystem('New session started. Cross-session memory loaded — the agent retains context from previous sessions.');
+  addSystem('New session started. Memory carries over from previous sessions; live status is always re-queried.');
   renderMemory(r.memory);
   input.focus();
 };
 
-// ── Helpers ────────────────────────────────────────────────────────────────
-function scroll(){ thread.parentElement.scrollTop = thread.parentElement.scrollHeight; }
-
+// ── Rendering ────────────────────────────────────────────────────────────────
 function add(role, text){
   const m = document.createElement('div');
   m.className = 'msg ' + role;
-  const who = role === 'user' ? 'You' : role === 'note' ? '' : 'Agent';
+  const who = role === 'user' ? 'You' : role === 'note' ? '' : 'Forge';
   m.innerHTML = `<div class="who">${who}</div><div class="bubble"></div>`;
-  m.querySelector('.bubble').textContent = text;
+  const bubble = m.querySelector('.bubble');
+  if(role === 'agent'){ bubble.classList.add('md'); bubble.innerHTML = mdToHtml(text); }
+  else { bubble.textContent = text; }
   thread.appendChild(m); scroll();
   return m;
 }
-
 function addSystem(text){
   const m = document.createElement('div');
   m.className = 'msg system';
@@ -312,36 +319,70 @@ function addSystem(text){
   m.querySelector('.bubble').textContent = text;
   thread.appendChild(m); scroll();
 }
+// ── Live activity (streamed progress) ────────────────────────────────────────
+function startActivity(){
+  const card = document.createElement('div');
+  card.className = 'activity';
+  card.innerHTML = `<div class="activity-head"><span class="spinner"></span><span class="ahead-text">Working…</span></div><div class="rows"></div>`;
+  thread.appendChild(card); scroll();
+  const rows = card.querySelector('.rows');
+  const map  = {};
 
-function renderTrace(trace){
-  const t = document.createElement('div');
-  t.className = 'trace';
-  t.innerHTML =
-    `<div class="trace-head">Pipeline — ${trace.length} agents ran in sequence</div>` +
-    trace.map((s, i) =>
-      `<div class="tstep">
-         <div class="tstep-num">${i+1}</div>
-         <div>
-           <div class="tstep-name"></div>
-           <div class="tstep-out"></div>
-         </div>
-       </div>`
-    ).join('');
-  trace.forEach((s, i) => {
-    t.querySelectorAll('.tstep')[i].querySelector('.tstep-name').textContent = s.agent;
-    t.querySelectorAll('.tstep')[i].querySelector('.tstep-out').textContent  = s.output;
-  });
-  thread.appendChild(t); scroll();
+  function row(kind, title, chips, meta, key){
+    const el = document.createElement('div');
+    el.className = 'act-row' + (kind === 'action' ? ' action' : '');
+    const chipsHtml = (chips && chips.length)
+      ? `<div class="act-chips">${chips.map(c => `<span class="chip">${esc(c)}</span>`).join('')}</div>` : '';
+    const metaHtml = meta ? `<span class="act-meta">${esc(meta)}</span>` : '';
+    el.innerHTML = `<div class="act-ico"></div><div class="act-body"><div class="act-title"></div>${chipsHtml}<div class="act-out"></div></div>`;
+    el.querySelector('.act-title').innerHTML = `${esc(title)}${metaHtml}`;
+    rows.appendChild(el); scroll();
+    if(key) map[key] = el;
+    return el;
+  }
+  const spin  = el => el.querySelector('.act-ico').innerHTML = '<span class="spinner"></span>';
+  const check = el => el.querySelector('.act-ico').innerHTML = '<span class="act-check">✓</span>';
+
+  return {
+    card,
+    note(kind, text){ check(row(kind, text)); },
+    begin(key, title, chips, meta){ spin(row('busy', title, chips, meta, key)); },
+    end(key, out){ const el = map[key]; if(!el) return; check(el); if(out){ const o = el.querySelector('.act-out'); o.classList.add('md'); o.innerHTML = mdToHtml(out); } },
+    finish(){
+      const sp = card.querySelector('.activity-head .spinner'); if(sp) sp.remove();
+      card.classList.add('done');
+      const h = card.querySelector('.ahead-text'); if(h) h.textContent = 'Completed';
+      card.querySelectorAll('.act-ico .spinner').forEach(s => s.parentElement.innerHTML = '<span class="act-check">✓</span>');
+    }
+  };
 }
 
+function handleEvent(act, ev){
+  switch(ev.type){
+    case 'status':         act.note('status', ev.text); break;
+    case 'agent_start':    act.begin('a:'+ev.name, 'Consulting ' + ev.name, ev.source ? [ev.source] : []); break;
+    case 'agent_end':      act.end('a:'+ev.name); break;
+    case 'pipeline_start': act.note('pipeline', `${ev.name} — ${ev.steps} steps`); break;
+    case 'step_start':     act.begin('s:'+ev.name, ev.name, ev.sources || [], `step ${ev.index}/${ev.total}`); break;
+    case 'step_end':       act.end('s:'+ev.name, ev.output); break;
+    case 'action':         act.note('action', ev.text); break;
+    case 'error':          act.finish(); add('agent', 'Error: ' + ev.text); break;
+    case 'done':
+      act.finish();
+      add('agent', ev.reply);
+      (ev.pending_actions || []).forEach(renderAction);
+      if(ev.memory) renderMemory(ev.memory);
+      break;
+  }
+}
 function renderAction(act){
   const el   = thread.lastElementChild.querySelector('.bubble') || thread.lastElementChild;
   const card = document.createElement('div');
   card.className = 'action';
   card.innerHTML = `
-    <div class="action-lbl">Pending approval &middot; ${act.type}</div>
+    <div class="action-lbl">Pending approval · ${esc(act.type)}</div>
     <div class="action-sum"></div>
-    <div class="action-id">${act.id}</div>
+    <div class="action-id">${esc(act.id)}</div>
     <div class="btns">
       <button class="btn-approve">Approve &amp; execute</button>
       <button class="btn-reject">Reject</button>
@@ -351,50 +392,59 @@ function renderAction(act){
     const r = await (await fetch(`/api/actions/${act.id}/approve`, {method:'POST'})).json();
     if(r.ok){
       auditCount.textContent = r.audit_count;
-      const first = auditLog.querySelector('.empty');
-      if(first) first.remove();
+      const empty = auditLog.querySelector('.muted-empty'); if(empty) empty.remove();
       const row = document.createElement('div');
       row.className = 'audit-row';
-      row.innerHTML = `<div class="audit-id">${r.executed.id}</div><div>${r.executed.type}: ${r.executed.summary.slice(0,55)}</div>`;
+      row.innerHTML = `<div class="audit-id">${esc(r.executed.id)}</div><div class="audit-sum"></div>`;
+      row.querySelector('.audit-sum').textContent = r.executed.summary;
       auditLog.prepend(row);
-      card.querySelector('.btns').outerHTML = '<div class="resolved ok">✓ Approved — executed and logged</div>';
+      card.querySelector('.btns').outerHTML = '<div class="resolved ok">✓ Approved — executed, logged, remembered</div>';
+      if(r.memory) renderMemory(r.memory);
     }
   };
   card.querySelector('.btn-reject').onclick = async () => {
-    await fetch(`/api/actions/${act.id}/reject`, {method:'POST'});
+    const r = await (await fetch(`/api/actions/${act.id}/reject`, {method:'POST'})).json();
     card.querySelector('.btns').outerHTML = '<div class="resolved no">✕ Rejected — no action taken</div>';
+    if(r.memory) renderMemory(r.memory);
   };
   el.appendChild(card);
 }
 
-// ── Send ───────────────────────────────────────────────────────────────────
+// ── Send (streams live progress via SSE) ─────────────────────────────────────
 async function send(){
   const text = input.value.trim();
   if(!text || sendBtn.disabled) return;
   input.value = '';
   add('user', text);
   sendBtn.disabled = true;
-  const pending = add('note', 'Working...');
+  const act = startActivity();
   try{
-    const res  = await fetch('/api/chat', {
+    const res = await fetch('/api/chat/stream', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({message: text})
     });
-    const data = await res.json();
-    pending.remove();
-    if(data.trace && data.trace.length) renderTrace(data.trace);
-    add('agent', data.reply);
-    (data.pending_actions || []).forEach(renderAction);
-    if(data.memory) renderMemory(data.memory);
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = '';
+    while(true){
+      const {value, done} = await reader.read();
+      if(done) break;
+      buf += dec.decode(value, {stream:true});
+      let i;
+      while((i = buf.indexOf('\n\n')) >= 0){
+        const frame = buf.slice(0, i); buf = buf.slice(i + 2);
+        const line = frame.split('\n').find(l => l.startsWith('data:'));
+        if(line){ try{ handleEvent(act, JSON.parse(line.slice(5).trim())); }catch(_){} }
+      }
+    }
   }catch(e){
-    pending.remove();
+    act.finish();
     add('agent', 'Request failed: ' + e.message);
   }finally{
     sendBtn.disabled = false;
     input.focus();
   }
 }
-
 sendBtn.onclick = send;
 input.addEventListener('keydown', e => { if(e.key === 'Enter') send(); });
 input.focus();

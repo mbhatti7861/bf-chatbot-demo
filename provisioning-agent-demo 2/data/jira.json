@@ -1,0 +1,21 @@
+{
+  "epic": [
+    {"key": "LZB-1", "summary": "Landing Zone Build Program — 2026", "status": "In Progress", "lead": "platform-eng"}
+  ],
+  "feature": [
+    {"key": "FEAT-1001", "summary": "LZ-1001 Team Atlas Build",    "lz_id": "LZ-1001", "status": "Done",        "epic": "LZB-1", "fix_version": "2026.Q1"},
+    {"key": "FEAT-1002", "summary": "LZ-1002 Team Borealis Build", "lz_id": "LZ-1002", "status": "In Progress", "epic": "LZB-1", "fix_version": "2026.Q2"},
+    {"key": "FEAT-1003", "summary": "LZ-1003 Team Cobalt Build",   "lz_id": "LZ-1003", "status": "Done",        "epic": "LZB-1", "fix_version": "2026.Q1"}
+  ],
+  "story": [
+    {"key": "LZB-210", "summary": "Step 10 — Intake and order files for Borealis",     "feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "Done",        "step": 10,  "sprint": "LZ Build Sprint 24"},
+    {"key": "LZB-211", "summary": "Step 100 — CIDR request for Borealis",               "feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "Done",        "step": 100, "sprint": "LZ Build Sprint 24"},
+    {"key": "LZB-212", "summary": "Step 200 — Non-Okta access roles for Borealis",      "feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "In Progress", "step": 200, "sprint": "LZ Build Sprint 24"},
+    {"key": "LZB-213", "summary": "Step 210 — Observability FedIdentity (ELMA) requests","feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "In Progress", "step": 210, "sprint": "LZ Build Sprint 24"},
+    {"key": "LZB-214", "summary": "Step 300 — Standard change for Borealis build",      "feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "In Progress", "step": 300, "sprint": "LZ Build Sprint 24"},
+    {"key": "LZB-215", "summary": "Step 400 — Vending Machine execution for Borealis",  "feature": "FEAT-1002", "lz_id": "LZ-1002", "status": "To Do",       "step": 400, "sprint": "LZ Build Sprint 24"}
+  ],
+  "sprint": [
+    {"name": "LZ Build Sprint 24", "state": "active", "start": "2026-06-02", "end": "2026-06-13", "committed_points": 21, "completed_points": 10}
+  ]
+}

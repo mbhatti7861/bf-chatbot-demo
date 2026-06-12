@@ -1,0 +1,134 @@
+[
+  {
+    "id": "STEP-10",
+    "title": "Step 10: Prepare LZ Order for Build (Intake)",
+    "space": "Runbook",
+    "text": "Validate the ServiceNow request data and confirm the LZ name is unique and the configuration items match the account environments. Run the automation tool to generate the four Landing Zone order files — parameter (parm.yml), metadata (meta.yml), feature (feature.html), and release (release.html) — and upload them to the document repository. Update the Jira feature: add the fix version, link the four artifacts, and remove the NOT READY flag. Mark the Build Prep task complete in ServiceNow and notify the build team that the feature is ready."
+  },
+  {
+    "id": "STEP-100",
+    "title": "Step 100: Submit LZ CIDR Request",
+    "space": "Runbook",
+    "text": "Authenticate to the LZ Build Prep tool, import the metadata file from Step 10, and call the automation platform APIs to generate CIDR ranges for the new Landing Zone. Full LZ CIDR generation can take up to 20 minutes; re-authenticate before starting to avoid a timeout and do not interrupt the run. An automated email is sent for each CIDR range generated. Services accounts (prod and non-prod) are always assigned an 'Internal' location even for External landing zones."
+  },
+  {
+    "id": "STEP-200",
+    "title": "Step 200: Submit Non-Okta Access Role Requests",
+    "space": "Runbook",
+    "text": "Register the new IAM roles in the identity provider and assign approver groups using the generated request spreadsheet. Customer-owned roles temporarily use an internal approver group so QA can proceed without waiting on customer approval; they are reassigned to the customer's group after QA. Compliance roles always use the standard compliance approver group. Submit via the identity management group request form and record the request number on the Jira story."
+  },
+  {
+    "id": "STEP-210",
+    "title": "Step 210: Observability — Submit FedIdentity Requests",
+    "space": "Runbook",
+    "text": "Grant the primary repository owner access to the observability access-request portal so they can approve onboarding requests for their Landing Zone. Submit the FedIdentity request on their behalf and follow up if it is still pending after two business days. This access is required before QA — without it, observability onboarding is blocked."
+  },
+  {
+    "id": "STEP-220",
+    "title": "Step 220: Monitoring — Submit AD Group Info",
+    "space": "Runbook",
+    "text": "Create the Active Directory group used for monitoring-platform access via the ServiceNow request form. The group name must follow the standard naming convention and include both the primary and secondary repository owners. The group is required later for monitoring onboarding (Step 720). Capture the request ticket number on the story."
+  },
+  {
+    "id": "STEP-300",
+    "title": "Step 300: Submit Change Request for LZ Build",
+    "space": "Runbook",
+    "text": "Create a standard (pre-approved) change in ServiceNow to authorize the build using the template that matches the work type (new LZ, add account, or modify). Standard changes require no extra approvals — assign the change to the engineer and schedule it. CIDR blocks (Step 100) must exist before the implementation start date. Set the change to Implement during the work, document activity in the Notes tab, and close it with notes when complete."
+  },
+  {
+    "id": "STEP-400",
+    "title": "Step 400 & 410: Run Vending Machine and Submit Compliance PR",
+    "space": "Runbook",
+    "text": "This is the core build step. Edit the per-account parameter YAML files, open a pull request, peer-review and merge it, set the change to Implement, then execute the Vending Machine Step Function. CMDB updates are decoupled from the build and are triggered by appending a '-cmdb' suffix to the execution name (the VM drops an SQS message that a queue-manager lambda relays to the CMDB-manager lambda). After the VM completes, submit the compliance-policy pull request (prefix the title with 'READY:') and notify the compliance team — compliance onboarding must finish before CICD onboarding."
+  },
+  {
+    "id": "STEP-400-PARAMS",
+    "title": "Step 400 Detail: Editing Parameter Files",
+    "space": "Runbook",
+    "text": "Each account (dev, test, uat, staging, prod, services-nonprod, services-prod) has its own parameters.yml; remove folders for accounts not being provisioned. Set the VPC CIDRs from the Step 100 allocation — primary is the West region, secondary is the East region. Uncomment the standard non-routable CIDR 100.127.0.0/16 only for non-services accounts unless the request explicitly asks otherwise. Validate YAML with spaces (never tabs) and confirm owner emails and application CIs resolve."
+  },
+  {
+    "id": "STEP-500",
+    "title": "Step 500: Generate Welcome Kit",
+    "space": "Runbook",
+    "text": "Generate the welcome kit (HTML, PDF, and a Confluence-ready version) by pulling LZ metadata from the database and application service tags from the ServiceNow CMDB via a Lambda relay, then archive the documents to the document repository. This step requires the account numbers produced by Step 400. The partner notice it triggers kicks off parallel onboarding work with several downstream teams, so delays here block multiple teams."
+  },
+  {
+    "id": "STEP-510",
+    "title": "Step 510: Generate Account Documentation Page",
+    "space": "Runbook",
+    "text": "Automatically create the Landing Zone account-information page in Confluence by reading account IDs per environment directly from the build database. The page is the single source of truth for account IDs and is required by downstream teams (CICD onboarding, security tooling, and the welcome kit). Requires Step 400 to be complete; capture the page URL for later steps."
+  },
+  {
+    "id": "STEP-520",
+    "title": "Step 520: Partner Notification",
+    "space": "Runbook",
+    "text": "Partner notification is now handled automatically by the ServiceNow Landing Zone order-fulfillment workflow, which notifies partner teams and tracks onboarding progress. No manual action is required when the workflow is active. Only send the manual notification email as an exception (for example, if the automation fails)."
+  },
+  {
+    "id": "STEP-600",
+    "title": "Step 600: CICD Onboarding",
+    "space": "Runbook",
+    "text": "Shared responsibility: the Build Factory creates the pipeline configuration and a merge request (customer.yaml plus environments/production.yaml populated with the account IDs from the Step 510 page), and the CICD team merges it and runs the onboarding pipelines. Repository owners must have logged in to the source-control platform before the Friday prior to onboarding, and requests must be submitted before the 11:00 ET cutoff to make the next session. Compliance onboarding (Step 410) must be validated first."
+  },
+  {
+    "id": "STEP-700",
+    "title": "Step 700: Submit Okta/AWS Access Role Requests",
+    "space": "Runbook",
+    "text": "Register the Okta/AWS IAM roles and approver groups for the owner team. Use a two-phase approver strategy: an internal approver group during QA, then a modification request after QA to reassign customer-owned roles to the customer's group. Compliance roles always use the standard compliance approver group. Roles must be active before QA (Step 900) can begin."
+  },
+  {
+    "id": "STEP-710",
+    "title": "Step 710: Observability Onboarding (RedShift and Grafana)",
+    "space": "Runbook",
+    "text": "Submit the RedShift onboarding request (the repository owner approves it) and the Grafana onboarding request (supply the read-only IAM role ARNs per environment plus the editor and viewer groups). Exclude Proving Ground and services accounts. For restricted landing zones use the designated internal approver instead of the repository owner. Depends on Steps 200, 210, 400, and 510."
+  },
+  {
+    "id": "STEP-720",
+    "title": "Step 720: Monitoring Onboarding (Dynatrace)",
+    "space": "Runbook",
+    "text": "Submit the monitoring-platform onboarding request: create a new management zone (named per the standard convention) and attach the Landing Zone account table, excluding Proving Ground. Use the Active Directory group created in Step 220. The customer must have the required VPN and AD group membership to access the monitoring platform; submit early because customer-dependent setup can take time."
+  },
+  {
+    "id": "STEP-800",
+    "title": "Step 800: Configure Privileged Access (EPV)",
+    "space": "Runbook",
+    "text": "Set the administrator passwords and MFA for the cloud accounts and bulk-upload the secrets to the Enterprise Password Vault (EPV) for privileged access management. Use time-bound privileged roles that expire at midnight, classify the working file as Restricted, export it as CSV for the bulk upload, then verify each account is searchable in EPV and securely delete local copies. Only the restricted-partition cloud accounts go to EPV."
+  },
+  {
+    "id": "STEP-900",
+    "title": "Step 900: Perform LZ QA",
+    "space": "Runbook",
+    "text": "Run the QA automation script, which validates FedIdentity/Okta and non-Okta role access, compliance contexts, CMDB relationships, network/CIDR assignments, and tool integrations. Document every defect against the LZ story. For CICD-type landing zones, only the observability (ELMA) and Terraform-plan checks are expected to fail — any other failure is a real defect. On successful completion the engineer must remove themselves from all LZ roles."
+  },
+  {
+    "id": "STEP-1000",
+    "title": "Step 1000: Welcome Meeting and Delivery",
+    "space": "Runbook",
+    "text": "Schedule the 30-minute welcome meeting (the customer engagement team leads it) with the welcome kit and the standard onboarding deck attached, inviting the required customer contacts and internal teams. Then close the ServiceNow Quality Inspection task, which marks the Landing Zone delivered and hands ownership to the customer. Confirm the welcome kit (Step 500) and account page (Step 510) are available before delivery."
+  },
+  {
+    "id": "POLICY-CHANGE-WINDOW",
+    "title": "Change Management Policy",
+    "space": "Policy",
+    "text": "Landing Zone builds are authorized by a standard, pre-approved change request; standard changes need only assignment and scheduling, not additional approvals. CIDR blocks (Step 100) must be generated before the change's implementation start date. The change is set to Implement during the work and closed with notes (actual start/end dates and a close code) afterward."
+  },
+  {
+    "id": "POLICY-CIDR",
+    "title": "CIDR Allocation Standards",
+    "space": "Policy",
+    "text": "Landing Zones are allocated non-overlapping CIDR blocks generated through the automation platform APIs, never assigned manually. Primary CIDR is the West region and secondary is the East region. The standard non-routable block is 100.127.0.0/16 and is applied only to non-services accounts unless explicitly requested. Services accounts are always 'Internal'. Never reuse a CIDR already in the registry."
+  },
+  {
+    "id": "POLICY-ACCESS-HYGIENE",
+    "title": "Privileged Access Hygiene Policy",
+    "space": "Policy",
+    "text": "Use time-bound privileged roles requested only when needed; they auto-expire at midnight on the end date and cannot be extended once expired. After QA, the engineer must remove themselves from all Landing Zone roles, keeping only what is needed for support. Credential files (for example, EPV uploads) must be classified Restricted and local copies securely deleted after upload."
+  },
+  {
+    "id": "POLICY-DECOM",
+    "title": "Decommission Policy",
+    "space": "Policy",
+    "text": "A Landing Zone may only be decommissioned after it has been confirmed idle (no active workloads) for at least 60 days. A change request is required before any teardown action, and production environments require a second approver. Confirm there are no active pipelines, open ServiceNow tickets, or in-progress Jira features tied to the environment before proposing decommission."
+  }
+]
