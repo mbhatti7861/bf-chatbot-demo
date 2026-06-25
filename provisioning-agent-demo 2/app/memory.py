@@ -34,7 +34,7 @@ _MAX_DECISIONS = 10
 # id pattern -> (entity type, enrichment source)
 _PATTERNS = [
     (re.compile(r"\bLZ-\d+\b"),   "landing_zone"),
-    (re.compile(r"\bTeam\s+\w+"), "team"),
+    (re.compile(r"\bTeam\s+[\w-]+"), "team"),
     (re.compile(r"\bRITM-\d+\b"), "servicenow_request"),
     (re.compile(r"\bINC-\d+\b"),  "servicenow_incident"),
     (re.compile(r"\bCRQ-\d+\b"),  "servicenow_change"),

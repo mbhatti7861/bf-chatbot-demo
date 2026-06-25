@@ -82,3 +82,7 @@ Defaults are built in (model ids, region, embedding model); override via the
 
 All content under `data/` is fabricated for demonstration. Do not commit real
 infrastructure data, credentials, ticket numbers, hostnames, or names.
+
+
+"What's the status of LZ-1002, what's blocking it, and what does policy say about the next step?"
+

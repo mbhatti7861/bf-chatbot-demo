@@ -298,9 +298,11 @@ system prompts — so cost is dominated by repeated input tokens. In rough prior
   which also makes conflict-flagging smarter.
 - **Freshness pipeline.** Scheduled sync from the real sources into the KB so embeddings
   don't drift from the wiki.
-- **Eval harness.** A golden Q&A set scored for **faithfulness / citation accuracy /
-  answer relevance** (e.g. Ragas) wired into CI, so retrieval changes can't silently
-  regress answers.
+- **Eval harness.** A first version exists: [`scripts/eval_retrieval.py`](scripts/eval_retrieval.py)
+  scores a golden query set for **hit@k / precision@k / MRR** against the live
+  connectors (vector or keyword backend) and exits non-zero below target, so it can
+  gate CI. Extend it toward **faithfulness / citation accuracy / answer relevance**
+  (e.g. Ragas) for end-to-end answer scoring.
 
 ### 10.5 Real data integration (replace the JSON)
 

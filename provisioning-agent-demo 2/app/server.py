@@ -68,6 +68,8 @@ def chat_stream(body: ChatIn):
             result.update(reply=reply, pending_actions=new_actions,
                           trace=list(pipeline.TRACE), memory=memory.load())
         except Exception as e:  # surface failures to the client instead of hanging
+            import traceback
+            traceback.print_exc()   # full stack to the uvicorn console for debugging
             result["error"] = str(e)
         finally:
             events.clear_sink()

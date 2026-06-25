@@ -37,6 +37,6 @@
     "space": "TEAM",
     "author": "m.alvarez",
     "updated": "2026-06-05",
-    "text": "Attendees reviewed the Borealis (LZ-1002) build. CIDR generation for Borealis finished in about 10 minutes this run, though the team noted it varies run to run. Action: chase the pending change request (CRQ-10021) blocking Step 300. Cobalt (LZ-1003) has now passed 60 days idle and is queued for decommission pending the impact check. Reminder: after Step 900 QA, remove yourself from all LZ roles."
+    "text": "Attendees reviewed the Build-Factory-Test (LZ-1002) build. CIDR generation for Build-Factory-Test finished in about 10 minutes this run, though the team noted it varies run to run. Action: chase the pending change request (CRQ-10021) blocking Step 300. Cobalt (LZ-1003) has now passed 60 days idle and is queued for decommission pending the impact check. Reminder: after Step 900 QA, remove yourself from all LZ roles."
   }
 ]
