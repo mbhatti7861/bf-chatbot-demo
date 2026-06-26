@@ -6,6 +6,20 @@ flows, and stages every consequential action for human approval.
 
 Built with **Strands Agents** on **Amazon Bedrock**. All data is synthetic.
 
+## How it works
+
+1. You ask a question or request a build action.
+2. A **supervisor** agent decides where it goes — to one source specialist, or it
+   **fans out** across several (Knowledge Base, Confluence, ServiceNow, Jira) and
+   merges their answers into one reply, with each fact **cited to its source**.
+3. Build and decommission requests run a **pipeline** of step agents that hand off
+   in sequence and **pause at a human approval gate** before any consequential action.
+4. The UI **streams live progress** — every agent, the data source it used, and each
+   staged action — tagged by role (Router / Specialist / Step / Action) and tallied
+   as "N agents · M sources" when it finishes.
+5. **Memory** keeps durable facts and decisions across sessions; live status is
+   always re-queried, so it never goes stale.
+
 ## Components
 
 | Layer | What we use |
@@ -82,7 +96,4 @@ Defaults are built in (model ids, region, embedding model); override via the
 
 All content under `data/` is fabricated for demonstration. Do not commit real
 infrastructure data, credentials, ticket numbers, hostnames, or names.
-
-
-"What's the status of LZ-1002, what's blocking it, and what does policy say about the next step?"
 
