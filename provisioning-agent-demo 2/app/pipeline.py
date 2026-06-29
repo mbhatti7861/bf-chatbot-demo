@@ -21,6 +21,7 @@ from strands import Agent
 from .models import FAST_MODEL
 from .sources import search_kb, search_confluence, query_servicenow, query_jira, check_cidr
 from .actions import propose_change_request_lz, propose_vending_machine, propose_decommission
+from .config import FAST_MODEL_LABEL
 from . import events
 
 TRACE: list = []
@@ -188,8 +189,8 @@ def run(steps: list, request: str) -> str:
     final   = ""
     total   = len(steps)
     for i, step in enumerate(steps, 1):
-        events.emit({"type": "step_start", "name": step["title"],
-                     "sources": step["sources"], "index": i, "total": total})
+        events.emit({"type": "step_start", "name": step["title"], "sources": step["sources"],
+                     "index": i, "total": total, "model": FAST_MODEL_LABEL})
         prompt = f"{context}\n\nYour task ({step['title']}): {step['task']}"
         out    = str(step["agent"](prompt)).strip()
         events.emit({"type": "step_end", "name": step["title"], "output": out[:280]})

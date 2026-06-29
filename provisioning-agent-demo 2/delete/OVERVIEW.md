@@ -24,6 +24,8 @@ approve** anything risky. All data is fake.
 | `pipeline.py` | **The assembly lines.** The 6-step "provision a Landing Zone" flow and the 3-step "decommission" flow. Each step is its own agent that hands off to the next. |
 | `memory.py` | **Long-term memory.** Remembers *which* things you worked on and *what you decided* — but never live status (that's always looked up fresh, so memory can't go stale). |
 | `events.py` | **Live progress.** Lets the bot report what it's doing in real time (routing, consulting a source, running a step, staging an action) so the screen updates as it works. |
+| `guardrails.py` | **Safety filter.** Blocks bad input (prompt-injection, pasted secrets) and redacts secrets/PII from answers. |
+| `grounding.py` | **Citation check.** After an answer, verifies every record it cited actually exists in the data — catches made-up references. |
 | `server.py` | The web server (FastAPI). Wires everything together and streams the live progress to the web page (`/api/chat/stream`, approve/reject, memory). |
 | `__init__.py` | Empty file that makes `app/` a Python package. |
 

@@ -5,70 +5,84 @@
       "type": "landing_zone",
       "label": "Team Build-Factory-Test · us-west-2 · new-account",
       "first_seen": "2026-06-07T09:14:00",
-      "last_seen": "2026-06-24T18:07:14"
+      "last_seen": "2026-06-29T12:01:41"
     },
     "CRQ-10021": {
       "id": "CRQ-10021",
       "type": "servicenow_change",
       "first_seen": "2026-06-12T15:47:04",
       "label": "Standard change for LZ-1002 build",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "FEAT-1002": {
-      "id": "FEAT-1002",
-      "type": "jira_feature",
-      "first_seen": "2026-06-24T18:07:14",
-      "label": "LZ-1002 Team Build-Factory-Test Build",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "LZB-212": {
-      "id": "LZB-212",
-      "type": "jira_story",
-      "first_seen": "2026-06-24T18:07:14",
-      "label": "Step 200 — Non-Okta access roles for Build-Factory-Test",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "LZB-213": {
-      "id": "LZB-213",
-      "type": "jira_story",
-      "first_seen": "2026-06-24T18:07:14",
-      "label": "Step 210 — Observability FedIdentity (ELMA) requests",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "LZB-214": {
-      "id": "LZB-214",
-      "type": "jira_story",
-      "first_seen": "2026-06-24T18:07:14",
-      "label": "Step 300 — Standard change for Build-Factory-Test build",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "LZB-215": {
-      "id": "LZB-215",
-      "type": "jira_story",
-      "first_seen": "2026-06-24T18:07:14",
-      "label": "Step 400 — Vending Machine execution for Build-Factory-Test",
-      "last_seen": "2026-06-24T18:07:14"
-    },
-    "Team Build": {
-      "id": "Team Build",
-      "type": "team",
-      "first_seen": "2026-06-15T14:34:45",
-      "label": "",
-      "last_seen": "2026-06-15T14:34:45"
+      "last_seen": "2026-06-29T12:01:41"
     },
     "Team Build-Factory-Test": {
       "id": "Team Build-Factory-Test",
       "type": "team",
       "label": "owns LZ-1002 (us-west-2)",
       "first_seen": "2026-06-07T09:14:00",
-      "last_seen": "2026-06-15T14:32:11"
+      "last_seen": "2026-06-29T12:01:41"
     },
-    "LZ-1003": {
-      "id": "LZ-1003",
-      "type": "landing_zone",
-      "label": "Team Cobalt · us-east-2 · new-account",
-      "first_seen": "2026-06-07T09:31:00",
-      "last_seen": "2026-06-07T09:31:00"
+    "LZB-212": {
+      "id": "LZB-212",
+      "type": "jira_story",
+      "first_seen": "2026-06-24T18:07:14",
+      "label": "Step 200 — Non-Okta access roles for Build-Factory-Test",
+      "last_seen": "2026-06-29T11:59:47"
+    },
+    "LZB-213": {
+      "id": "LZB-213",
+      "type": "jira_story",
+      "first_seen": "2026-06-24T18:07:14",
+      "label": "Step 210 — Observability FedIdentity (ELMA) requests",
+      "last_seen": "2026-06-29T11:59:47"
+    },
+    "LZB-214": {
+      "id": "LZB-214",
+      "type": "jira_story",
+      "first_seen": "2026-06-24T18:07:14",
+      "label": "Step 300 — Standard change for Build-Factory-Test build",
+      "last_seen": "2026-06-29T11:59:47"
+    },
+    "FEAT-1002": {
+      "id": "FEAT-1002",
+      "type": "jira_feature",
+      "first_seen": "2026-06-24T18:07:14",
+      "label": "LZ-1002 Team Build-Factory-Test Build",
+      "last_seen": "2026-06-26T17:35:10"
+    },
+    "RITM-10020": {
+      "id": "RITM-10020",
+      "type": "servicenow_request",
+      "first_seen": "2026-06-26T17:35:10",
+      "label": "New Landing Zone for Team Build-Factory-Test",
+      "last_seen": "2026-06-26T17:35:10"
+    },
+    "RITM-10041": {
+      "id": "RITM-10041",
+      "type": "servicenow_request",
+      "first_seen": "2026-06-26T17:35:10",
+      "label": "Create AWS Okta access roles for Build-Factory-Test (Step 700)",
+      "last_seen": "2026-06-26T17:35:10"
+    },
+    "INC-2052": {
+      "id": "INC-2052",
+      "type": "servicenow_incident",
+      "first_seen": "2026-06-26T17:35:10",
+      "label": "Delayed CIDR generation email for Build-Factory-Test build",
+      "last_seen": "2026-06-26T17:35:10"
+    },
+    "INC-2053": {
+      "id": "INC-2053",
+      "type": "servicenow_incident",
+      "first_seen": "2026-06-26T17:35:10",
+      "label": "RedShift (ELMA) access approval pending from repository owner",
+      "last_seen": "2026-06-26T17:35:10"
+    },
+    "LZB-1": {
+      "id": "LZB-1",
+      "type": "jira_story",
+      "first_seen": "2026-06-26T17:35:10",
+      "label": "",
+      "last_seen": "2026-06-26T17:35:10"
     }
   },
   "decisions": [

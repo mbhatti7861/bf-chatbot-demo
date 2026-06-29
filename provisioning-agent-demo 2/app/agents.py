@@ -22,6 +22,7 @@ from .sources import (
     validate_build_readiness,
 )
 from .actions import propose_vending_machine
+from .config import MODEL_LABEL
 from . import pipeline, events
 
 GROUND = (
@@ -30,7 +31,10 @@ GROUND = (
     "'ServiceNow · cmdb_ci_landing_zone', 'Jira · FEAT-1002'). "
     "Live state (tickets, CMDB, CIDR, sprint/issue status) comes from ServiceNow and Jira and is authoritative; "
     "documents (Knowledge Base, Confluence) describe process and policy, not current values. "
-    "If two sources disagree on a value, present both and flag the conflict explicitly — never silently pick one. "
+    "If two sources disagree on a value, DO NOT silently pick one. Lead your answer with a markdown "
+    "blockquote that starts exactly with '> ⚠ **Source conflict:**' and names both values and both sources "
+    "(e.g. '> ⚠ **Source conflict:** the Knowledge Base says ~20 min, but a Confluence note says ~10 min'), "
+    "then explain. "
     "Be concise and precise."
 )
 
@@ -63,7 +67,7 @@ _build = Agent(
 
 
 def _consult(name: str, source: str, agent: Agent, question: str) -> str:
-    events.emit({"type": "agent_start", "name": name, "source": source})
+    events.emit({"type": "agent_start", "name": name, "source": source, "model": MODEL_LABEL})
     out = str(agent(question))
     events.emit({"type": "agent_end", "name": name})
     return out
@@ -134,6 +138,8 @@ SUPERVISOR = (
     "Routing: "
     "process/policy/how-to/standards -> ask_kb; "
     "orientation, architecture, the full step catalog, FAQs, or team discussion -> ask_confluence; "
+    "for questions about how long something takes, durations, or timing, consult BOTH ask_kb and ask_confluence "
+    "(the runbook and the team notes may differ) and compare them; "
     "live tickets, change requests, Landing Zone CMDB state, or CIDR allocations -> ask_servicenow; "
     "feature/story/sprint/delivery status -> ask_jira; "
     "check build readiness, or run/execute the Vending Machine for an already-prepared Landing Zone "

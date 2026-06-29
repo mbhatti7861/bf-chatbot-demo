@@ -9,7 +9,8 @@ from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 
 from .agents import build_supervisor
-from . import actions, sources, pipeline, memory, events
+from .config import MODEL_LABEL
+from . import actions, sources, pipeline, memory, events, guardrails, grounding
 
 app   = FastAPI(title="Forge — LZ Provisioning Agent (demo)")
 agent = build_supervisor()
@@ -54,6 +55,20 @@ def chat_stream(body: ChatIn):
     routing, each specialist consulted, each pipeline step, and every action staged
     for approval — followed by a final 'done' event with the full result.
     """
+    # Input guardrail — block prompt-injection / secret-bearing input before it ever
+    # reaches the agent.
+    gi = guardrails.check_input(body.message)
+    if not gi["allowed"]:
+        def blocked():
+            yield _sse({"type": "guardrail", "stage": "input", "blocked": True,
+                        "reason": gi["reason"], "flags": gi["flags"]})
+            yield _sse({"type": "done",
+                        "reply": "**Request blocked by input guardrail.** " + gi["reason"],
+                        "pending_actions": [], "trace": [], "memory": memory.load(),
+                        "citations": {"checked": 0, "verified": [], "unverified": []}})
+        return StreamingResponse(blocked(), media_type="text/event-stream",
+                                 headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
     q: queue.Queue = queue.Queue()
     result: dict = {}
 
@@ -63,10 +78,14 @@ def chat_stream(body: ChatIn):
         before = set(actions.PENDING)
         try:
             reply = str(agent(memory.context_prefix() + body.message))
+            fo    = guardrails.filter_output(reply)          # output guardrail (redaction)
+            reply = fo["text"]
             new_actions = [actions.PENDING[a] for a in actions.PENDING if a not in before]
             memory.extract_and_save(body.message, reply, list(pipeline.TRACE))
             result.update(reply=reply, pending_actions=new_actions,
-                          trace=list(pipeline.TRACE), memory=memory.load())
+                          trace=list(pipeline.TRACE), memory=memory.load(),
+                          citations=grounding.verify_citations(reply),   # groundedness check
+                          redactions=fo["redactions"])
         except Exception as e:  # surface failures to the client instead of hanging
             import traceback
             traceback.print_exc()   # full stack to the uvicorn console for debugging
@@ -78,7 +97,7 @@ def chat_stream(body: ChatIn):
     threading.Thread(target=worker, daemon=True).start()
 
     def stream():
-        yield _sse({"type": "status", "text": "Routing your request…"})
+        yield _sse({"type": "status", "text": "Routing your request…", "model": MODEL_LABEL})
         while True:
             ev = q.get()
             if ev is None:
@@ -87,11 +106,15 @@ def chat_stream(body: ChatIn):
         if result.get("error"):
             yield _sse({"type": "error", "text": result["error"]})
         else:
+            if result.get("redactions"):
+                yield _sse({"type": "guardrail", "stage": "output", "blocked": False,
+                            "redactions": result["redactions"]})
             yield _sse({"type": "done",
                         "reply": result.get("reply", ""),
                         "pending_actions": result.get("pending_actions", []),
                         "trace": result.get("trace", []),
-                        "memory": result.get("memory", {})})
+                        "memory": result.get("memory", {}),
+                        "citations": result.get("citations", {"checked": 0, "verified": [], "unverified": []})})
 
     return StreamingResponse(stream(), media_type="text/event-stream",
                              headers={"Cache-Control": "no-cache",
